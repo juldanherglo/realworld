@@ -43,7 +43,7 @@ module "eks" {
     karpenter = {
       instance_types = ["t3.micro"]
 
-      min_size     = 2
+      min_size     = 3
       max_size     = 8
       desired_size = 3
 
