@@ -2,7 +2,7 @@ development:
   dialect: postgres
   database: gobuff_realworld_example_app_development
   user: postgres
-  password: postgres
+  password: {{envOr "DATABASE_PASSWORD" "postgres"}}
   host: {{envOr "DATABASE_HOST" "127.0.0.1"}}
   pool: 5
 
