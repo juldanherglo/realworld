@@ -58,6 +58,10 @@ resource "kubectl_manifest" "deployment" {
         - image: ghcr.io/juldanherglo/realworld:main
           name: realworld
           resources: {}
+          ports:
+          - containerPort: 3000
+            name: web
+            protocol: TCP
           env:
           - name: DATABASE_HOST
             value: ${module.db.db_instance_address}

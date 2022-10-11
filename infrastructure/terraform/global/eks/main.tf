@@ -2,7 +2,7 @@ data "aws_partition" "current" {}
 
 locals {
   name            = "takehome"
-  cluster_version = "1.22"
+  cluster_version = "1.23"
   region          = "eu-west-1"
   partition       = data.aws_partition.current.partition
 
@@ -24,6 +24,16 @@ module "eks" {
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
 
+  cluster_addons = {
+    coredns = {
+      resolve_conflicts = "OVERWRITE"
+    }
+    kube-proxy = {}
+    vpc-cni = {
+      resolve_conflicts = "OVERWRITE"
+    }
+  }
+
   vpc_id     = data.terraform_remote_state.vpc.outputs.vpc.vpc_id
   subnet_ids = data.terraform_remote_state.vpc.outputs.vpc.private_subnets
 
@@ -36,6 +46,23 @@ module "eks" {
       to_port                       = 8443
       type                          = "ingress"
       source_cluster_security_group = true
+    }
+    ingress_self_all = {
+      description = "Node to node all ports/protocols"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      type        = "ingress"
+      self        = true
+    }
+    egress_all = {
+      description      = "Node all egress"
+      protocol         = "-1"
+      from_port        = 0
+      to_port          = 0
+      type             = "egress"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = ["::/0"]
     }
   }
 
