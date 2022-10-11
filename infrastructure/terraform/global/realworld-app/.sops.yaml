@@ -1,0 +1,4 @@
+creation_rules:
+  - path_regex: secrets\.enc\.yaml$
+    kms: arn:aws:kms:eu-west-1:097436571457:key/b25a7daf-b80b-4d1b-894f-93deb1e06547
+    aws_profile: takehome
