@@ -23,6 +23,7 @@ module "vpc" {
   create_database_subnet_route_table = true
 
   enable_nat_gateway   = true
+  single_nat_gateway   = true
   enable_dns_hostnames = true
 
   public_subnet_tags = {
