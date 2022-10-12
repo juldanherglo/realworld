@@ -2,8 +2,8 @@
 apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImageUpdateAutomation
 metadata:
-  name: flux-system
-  namespace: default
+  name: realworld
+  namespace: flux-system
 spec:
   git:
     checkout:
