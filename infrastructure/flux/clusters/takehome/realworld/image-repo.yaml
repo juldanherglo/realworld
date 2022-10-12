@@ -3,10 +3,9 @@ apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImageRepository
 metadata:
   name: realworld
-  namespace: default
+  namespace: flux-system
 spec:
   image: ghcr.io/juldanherglo/realworld
   interval: 1m0s
   secretRef:
     name: docker-ghcr
-
