@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: realworld
+spec:
+  minReadySeconds: 3
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 60
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: realworld
+  template:
+    metadata:
+      labels:
+        app: realworld
+    spec:
+      containers:
+      - name: realworld
+        image: ghcr.io/juldanherglo/realworld:1.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
+        env:
+        - name: DATABASE_HOST
+          value: my.server
+        - name: DATABASE_PASSWORD
+          value: my.password
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 768Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
