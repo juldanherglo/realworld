@@ -4,3 +4,4 @@ resources:
   - hpa.yaml
   - deployment.yaml
   - service.yaml
+  - image-repo.yaml
