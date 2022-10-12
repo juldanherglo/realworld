@@ -31,9 +31,15 @@ spec:
           protocol: TCP
         env:
         - name: DATABASE_HOST
-          value: my.server
+          valueFrom:
+            secretKeyRef:
+              name: realworld-db
+              key: DATABASE_HOST
         - name: DATABASE_PASSWORD
-          value: my.password
+          valueFrom:
+            secretKeyRef:
+              name: realworld-db
+              key: DATABASE_PASSWORD
         resources:
           limits:
             cpu: 1000m
