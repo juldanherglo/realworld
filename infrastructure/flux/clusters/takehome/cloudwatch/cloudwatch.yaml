@@ -108,8 +108,8 @@ spec:
               cpu:  200m
               memory: 200Mi
             requests:
-              cpu: 200m
-              memory: 200Mi
+              cpu: 10m
+              memory: 100Mi
           # Please don't change below envs
           env:
             - name: HOST_IP
@@ -517,7 +517,7 @@ spec:
             limits:
               memory: 200Mi
             requests:
-              cpu: 500m
+              cpu: 10m
               memory: 100Mi
         volumeMounts:
         # Please don't change below read-only permissions
