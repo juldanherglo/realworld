@@ -5,7 +5,7 @@ metadata:
   name: realworld
   namespace: default
 spec:
-  image: ghcr.io/stefanprodan/podinfo
+  image: ghcr.io/juldanherglo/realworld
   interval: 1m0s
   secretRef:
     name: docker-ghcr
