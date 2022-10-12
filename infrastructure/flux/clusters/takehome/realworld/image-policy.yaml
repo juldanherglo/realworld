@@ -1,0 +1,13 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: realworld
+  namespace: default
+spec:
+  imageRepositoryRef:
+    name: realworld
+  policy:
+    semver:
+      range: 1.x.x
+
