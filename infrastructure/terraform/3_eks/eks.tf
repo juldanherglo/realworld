@@ -70,9 +70,9 @@ module "eks" {
     karpenter = {
       instance_types = ["m5.large"]
 
-      min_size     = 2
+      min_size     = 3
       max_size     = 10
-      desired_size = 2
+      desired_size = 3
 
       iam_role_additional_policies = [
         # Required by Karpenter
@@ -178,6 +178,11 @@ resource "helm_release" "karpenter" {
   set {
     name  = "aws.defaultInstanceProfile"
     value = aws_iam_instance_profile.karpenter.name
+  }
+
+  set {
+    name  = "controller.resources.requests.cpu"
+    value = "100m"
   }
 
   set {
