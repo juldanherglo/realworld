@@ -9,5 +9,4 @@ spec:
     name: realworld
   policy:
     semver:
-      range: 1.x.x
-
+      range: '>=1.0.0 <2.0.0'
