@@ -18,12 +18,14 @@ provider "kubectl" {
 }
 
 resource "kubectl_manifest" "ghcr_secret" {
+  for_each = toset(["default", "flux-system"])
+
   yaml_body = <<-YAML
   apiVersion: v1
   kind: Secret
   metadata:
     name: ${local.ghcr_secret_name}
-    namespace: default
+    namespace: ${each.key}
     creationTimestamp: null
   data:
     .dockerconfigjson: ${data.sops_file.secrets_enc_yaml.data[".dockerconfigjson"]}
