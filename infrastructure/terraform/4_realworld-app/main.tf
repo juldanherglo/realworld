@@ -20,53 +20,27 @@ provider "kubectl" {
 resource "kubectl_manifest" "ghcr_secret" {
   yaml_body = <<-YAML
   apiVersion: v1
-  data:
-    .dockerconfigjson: ${data.sops_file.secrets_enc_yaml.data[".dockerconfigjson"]}
   kind: Secret
   metadata:
-    creationTimestamp: null
     name: ${local.ghcr_secret_name}
     namespace: default
+    creationTimestamp: null
+  data:
+    .dockerconfigjson: ${data.sops_file.secrets_enc_yaml.data[".dockerconfigjson"]}
   type: kubernetes.io/dockerconfigjson
   YAML
 }
 
 resource "kubectl_manifest" "deployment" {
   yaml_body = <<-YAML
-  apiVersion: apps/v1
-  kind: Deployment
+  apiVersion: v1
+  kind: Secret
   metadata:
+    name: realworld-db
+    namespace: default
     creationTimestamp: null
-    labels:
-      app: realworld-app
-    name: realworld-app
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
-        app: realworld-app
-    strategy: {}
-    template:
-      metadata:
-        creationTimestamp: null
-        labels:
-          app: realworld-app
-      spec:
-        imagePullSecrets:
-        - name: ${local.ghcr_secret_name}
-        containers:
-        - image: ghcr.io/juldanherglo/realworld:main
-          name: realworld
-          resources: {}
-          ports:
-          - containerPort: 3000
-            name: web
-            protocol: TCP
-          env:
-          - name: DATABASE_HOST
-            value: ${module.db.db_instance_address}
-          - name: DATABASE_PASSWORD
-            value: ${module.db.db_instance_password}
-  status: {}
+  data:
+    DATABASE_HOST: ${base64encode(module.db.db_instance_address)}
+    DATABASE_PASSWORD: ${base64encode(module.db.db_instance_password)}
   YAML
 }
