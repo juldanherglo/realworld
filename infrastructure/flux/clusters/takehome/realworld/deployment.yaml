@@ -5,6 +5,7 @@ metadata:
   namespace: default
 spec:
   minReadySeconds: 3
+  replicas: 2
   revisionHistoryLimit: 5
   progressDeadlineSeconds: 60
   strategy:
