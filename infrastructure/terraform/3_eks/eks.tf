@@ -68,11 +68,11 @@ module "eks" {
 
   eks_managed_node_groups = {
     karpenter = {
-      instance_types = ["t3.micro"]
+      instance_types = ["m5.large"]
 
-      min_size     = 4
+      min_size     = 2
       max_size     = 10
-      desired_size = 4
+      desired_size = 2
 
       iam_role_additional_policies = [
         # Required by Karpenter
@@ -197,7 +197,7 @@ resource "kubectl_manifest" "karpenter_provisioner" {
     requirements:
       - key: "node.kubernetes.io/instance-type"
         operator: In
-        values: ["t3.micro"]
+        values: ["m5.large"]
     limits:
       resources:
         cpu: 1000
