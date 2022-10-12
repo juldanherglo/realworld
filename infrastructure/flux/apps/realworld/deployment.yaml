@@ -18,6 +18,8 @@ spec:
       labels:
         app: realworld
     spec:
+      imagePullSecrets:
+      - name: docker-ghcr
       containers:
       - name: realworld
         image: ghcr.io/juldanherglo/realworld:1.0.1
