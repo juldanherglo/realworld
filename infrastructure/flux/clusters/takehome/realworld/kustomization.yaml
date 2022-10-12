@@ -4,6 +4,6 @@ resources:
   - hpa.yaml
   - deployment.yaml
   - service.yaml
-  - image-repo.yaml
-  - image-policy.yaml
-  - image-update-automation.yaml
+  #- image-repo.yaml
+  #- image-policy.yaml
+  #- image-update-automation.yaml
