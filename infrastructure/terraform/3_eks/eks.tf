@@ -70,9 +70,9 @@ module "eks" {
     karpenter = {
       instance_types = ["t3.micro"]
 
-      min_size     = 3
-      max_size     = 8
-      desired_size = 3
+      min_size     = 4
+      max_size     = 10
+      desired_size = 4
 
       iam_role_additional_policies = [
         # Required by Karpenter
