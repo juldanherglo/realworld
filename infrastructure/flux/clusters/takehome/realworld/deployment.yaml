@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: realworld
-  namespace: default
+  namespace: realworld
 spec:
   minReadySeconds: 3
   replicas: 2
