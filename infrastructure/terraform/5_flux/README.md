@@ -7,7 +7,7 @@ kubectl -n realworld scale deployment realworld-loadtest --replicas 4
 
 Scheduling can be observed durint loadtest with:
 ```
-watch bash -c "'kubectl -n realworld get pods; kubectl top pods; kubectl top nodes'"
+watch bash -c "'kubectl -n realworld get pods; kubectl -n realworld top pods; kubectl top nodes'"
 ```
 
 Loadtest can be stopped with:
