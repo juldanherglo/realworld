@@ -23,3 +23,9 @@ module "terraform_state_backend" {
   terraform_backend_config_file_name = "backend.tf"
   force_destroy                      = false
 }
+
+#tfsec:ignore:aws-kms-auto-rotate-keys
+resource "aws_kms_key" "sops" {
+  description             = "sops"
+  deletion_window_in_days = 7
+}
