@@ -1,3 +1,22 @@
+# realworld
+Installs RDS and some helper kubernetes resources.
+
+Loadtest can be started with:
+```
+kubectl -n realworld scale deployment realworld-loadtest --replicas 4
+```
+
+Scheduling can be observed durint loadtest with:
+```
+watch bash -c "'kubectl -n realworld get pods; kubectl top pods; kubectl top nodes'"
+```
+
+Loadtest can be stopped with:
+```
+kubectl -n realworld scale deployment realworld-loadtest --replicas 0
+```
+
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
