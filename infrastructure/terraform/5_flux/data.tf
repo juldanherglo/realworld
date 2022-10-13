@@ -7,3 +7,13 @@ data "terraform_remote_state" "eks" {
     profile = "takehome"
   }
 }
+
+data "terraform_remote_state" "db" {
+  backend = "s3"
+  config = {
+    bucket  = "takehome-prod-terraform-state"
+    key     = "realworld-app/terraform.tfstate"
+    region  = "eu-west-1"
+    profile = "takehome"
+  }
+}
