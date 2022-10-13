@@ -8,12 +8,6 @@ variable "repository_name" {
   description = "github repository name"
 }
 
-#variable "repository_visibility" {
-#type        = string
-#default     = "private"
-#description = "How visible is the github repo"
-#}
-
 variable "branch" {
   type        = string
   default     = "main"
