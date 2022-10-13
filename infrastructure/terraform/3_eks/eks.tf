@@ -15,6 +15,9 @@ locals {
 # EKS Module
 ################################################################################
 
+#tfsec:ignore:aws-eks-no-public-cluster-access
+#tfsec:ignore:aws-eks-no-public-cluster-access-to-cidr
+#tfsec:ignore:aws-ec2-no-public-egress-sgr
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 18.0"
@@ -23,6 +26,26 @@ module "eks" {
   cluster_version                 = local.cluster_version
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
+  cluster_endpoint_public_access_cidrs = [
+    # Kabel Deutschland
+    "95.90.235.0/24",
+
+  ]
+
+  cluster_encryption_config = [
+    {
+      provider_key_arn = "arn:aws:kms:eu-west-1:097436571457:key/b25a7daf-b80b-4d1b-894f-93deb1e06547"
+      resources        = ["secrets"]
+    }
+  ]
+  cluster_enabled_log_types = [
+    "audit",
+    "api",
+    "authenticator",
+    "scheduler",
+    "controllerManager",
+  ]
+
 
   cluster_addons = {
     coredns = {
