@@ -1,4 +1,14 @@
 # https://github.com/cloudposse/terraform-aws-tfstate-backend#usage
+#tfsec:ignore:aws-s3-block-public-acls
+#tfsec:ignore:aws-s3-block-public-policy
+#tfsec:ignore:aws-s3-ignore-public-acls
+#tfsec:ignore:aws-s3-no-public-buckets
+#tfsec:ignore:aws-sqs-enable-queue-encryption
+#tfsec:ignore:aws-s3-encryption-customer-key
+#tfsec:ignore:aws-dynamodb-enable-at-rest-encryption
+#tfsec:ignore:aws-s3-enable-bucket-logging
+#tfsec:ignore:aws-s3-specify-public-access-block
+#tfsec:ignore:aws-dynamodb-table-customer-key
 module "terraform_state_backend" {
   source = "cloudposse/tfstate-backend/aws"
   # Cloud Posse recommends pinning every module to a specific version
