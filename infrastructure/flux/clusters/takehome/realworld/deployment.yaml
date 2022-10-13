@@ -40,10 +40,7 @@ spec:
           protocol: TCP
         env:
         - name: DATABASE_HOST
-          valueFrom:
-            secretKeyRef:
-              name: realworld-db
-              key: DATABASE_HOST
+          value: db.vpc.local
         - name: DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
