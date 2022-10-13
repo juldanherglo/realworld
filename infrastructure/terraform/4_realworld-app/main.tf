@@ -46,3 +46,45 @@ resource "kubectl_manifest" "deployment" {
     DATABASE_PASSWORD: ${base64encode(module.db.db_instance_password)}
   YAML
 }
+
+resource "kubectl_manifest" "realworld_loadtest" {
+  yaml_body = <<-YAML
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: realworld-loadtest
+    namespace: default
+  spec:
+    minReadySeconds: 3
+    replicas: 0
+    revisionHistoryLimit: 5
+    progressDeadlineSeconds: 60
+    strategy:
+      rollingUpdate:
+        maxUnavailable: 0
+      type: RollingUpdate
+    selector:
+      matchLabels:
+        app: realworld-loadtest
+    template:
+      metadata:
+        labels:
+          app: realworld-loadtest
+      spec:
+        containers:
+        - name: realworld-loadtest
+          image: busybox
+          imagePullPolicy: IfNotPresent
+          command:
+          - /bin/ash
+          - -c
+          - "while true; do wget -q -O- realworld:3000; done"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 768Mi
+            requests:
+              cpu: 1000m
+              memory: 256Mi
+  YAML
+}
