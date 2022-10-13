@@ -4,5 +4,6 @@ namespace: metrics-server
 configurations:
   - kustomizeconfig.yaml
 resources:
+  - namespace.yaml
   - metrics-server-repository.yaml
   - metrics-server-release.yaml
