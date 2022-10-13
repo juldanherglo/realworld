@@ -47,6 +47,15 @@ module "eks" {
       type                          = "ingress"
       source_cluster_security_group = true
     }
+    # Control plane polling metrics-server
+    ingress_metrics_server_tcp = {
+      description                   = "Control plane polling metrics-server"
+      protocol                      = "tcp"
+      from_port                     = 4443
+      to_port                       = 4443
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
     ingress_self_all = {
       description = "Node to node all ports/protocols"
       protocol    = "-1"
