@@ -3,7 +3,6 @@ data "aws_partition" "current" {}
 locals {
   name            = "takehome"
   cluster_version = "1.23"
-  region          = "eu-west-1"
   partition       = data.aws_partition.current.partition
 
   tags = {
