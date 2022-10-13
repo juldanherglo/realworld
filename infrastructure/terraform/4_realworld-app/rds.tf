@@ -76,11 +76,13 @@ module "db" {
       value = "utf8"
     }
   ]
+}
 
-  #db_option_group_tags = {
-  #"Sensitive" = "low"
-  #}
-  #db_parameter_group_tags = {
-  #"Sensitive" = "low"
-  #}
+
+resource "aws_route53_record" "db" {
+  zone_id = data.terraform_remote_state.vpc.outputs.zone.zone_id
+  name    = "db.${data.terraform_remote_state.vpc.outputs.zone.name}"
+  type    = "CNAME"
+  ttl     = 10
+  records = [module.db.db_instance_address]
 }
