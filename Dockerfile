@@ -2,17 +2,15 @@
 # https://docs.docker.com/engine/userguide/eng-image/multistage-build/
 FROM gobuffalo/buffalo:v0.18.1 as builder
 
-RUN mkdir -p $GOPATH/src/gobuff_realworld_example_app
+RUN mkdir -p "$GOPATH/src/gobuff_realworld_example_app"
 WORKDIR $GOPATH/src/gobuff_realworld_example_app
 
-ADD . .
+COPY . .
 ENV GO111MODULES=on
-RUN go get ./...
-RUN buffalo build --static -o /bin/app
+RUN go get ./... && buffalo build --static -o /bin/app
 
-FROM alpine
-RUN apk add --no-cache bash
-RUN apk add --no-cache ca-certificates
+FROM alpine:3.16.2
+RUN apk add --no-cache bash=5.1.16-r2 ca-certificates=20220614-r0
 
 WORKDIR /bin/
 
@@ -31,4 +29,4 @@ ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait
 RUN chmod +x /wait
 
 # Run the migrations before running the binary:
-CMD /wait; /bin/app migrate; /bin/app
+CMD ["bash", "-c", "/wait; /bin/app migrate; /bin/app"]
