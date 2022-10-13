@@ -22,7 +22,6 @@ aws --profile takehome eks update-kubeconfig --region eu-west-1 --name takehome
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 4.34.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.3.0 |
-| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | 1.14.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
@@ -38,7 +37,6 @@ aws --profile takehome eks update-kubeconfig --region eu-west-1 --name takehome
 |------|------|
 | [aws_iam_instance_profile.karpenter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
 | [helm_release.karpenter](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [kubectl_manifest.karpenter_provisioner](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
 | [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
 | [terraform_remote_state.vpc](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 

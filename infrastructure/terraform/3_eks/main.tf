@@ -221,33 +221,3 @@ resource "helm_release" "karpenter" {
     value = "256Mi"
   }
 }
-
-# Workaround - https://github.com/hashicorp/terraform-provider-kubernetes/issues/1380#issuecomment-967022975
-resource "kubectl_manifest" "karpenter_provisioner" {
-  yaml_body = <<-YAML
-  apiVersion: karpenter.sh/v1alpha5
-  kind: Provisioner
-  metadata:
-    name: default
-  spec:
-    requirements:
-      - key: "node.kubernetes.io/instance-type"
-        operator: In
-        values: ["m5.large"]
-    limits:
-      resources:
-        cpu: 1000
-    provider:
-      subnetSelector:
-        karpenter.sh/discovery: ${local.name}
-      securityGroupSelector:
-        karpenter.sh/discovery: ${local.name}
-      tags:
-        karpenter.sh/discovery: ${local.name}
-    ttlSecondsAfterEmpty: 30
-  YAML
-
-  depends_on = [
-    helm_release.karpenter
-  ]
-}
