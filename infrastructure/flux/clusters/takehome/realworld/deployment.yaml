@@ -5,7 +5,7 @@ metadata:
   namespace: realworld
 spec:
   minReadySeconds: 3
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 5
   progressDeadlineSeconds: 60
   strategy:
