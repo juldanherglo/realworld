@@ -40,11 +40,3 @@ module "vpc" {
 
   tags = local.tags
 }
-
-resource "aws_route53_zone" "private" {
-  name = "vpc.local"
-
-  vpc {
-    vpc_id = module.vpc.vpc_id
-  }
-}
