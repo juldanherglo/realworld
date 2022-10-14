@@ -1,6 +1,15 @@
+---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: linkerd
   labels:
     config.linkerd.io/admission-webhooks: disabled
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: linkerd-viz
+  labels:
+    linkerd.io/extension: viz
+  annotations:
