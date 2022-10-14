@@ -38,11 +38,12 @@ module "eks" {
     }
   ]
   cluster_enabled_log_types = [
-    "audit",
-    "api",
-    "authenticator",
-    "scheduler",
-    "controllerManager",
+    # TODO: re-enable
+    #"audit",
+    #"api",
+    #"authenticator",
+    #"scheduler",
+    #"controllerManager",
   ]
 
 
@@ -158,8 +159,10 @@ module "karpenter_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 4.21.1"
 
-  role_name                          = "karpenter-controller-${local.name}"
-  attach_karpenter_controller_policy = true
+  role_name                              = "karpenter-controller-${local.name}"
+  attach_karpenter_controller_policy     = true
+  attach_cert_manager_policy             = true
+  attach_load_balancer_controller_policy = true
 
   karpenter_controller_cluster_id = module.eks.cluster_id
   karpenter_controller_ssm_parameter_arns = [
