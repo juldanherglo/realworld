@@ -4,7 +4,7 @@ metadata:
   name: linkerd-viz
 spec:
   dependsOn:
-    - name: linkerd-control-plane
+    - name: linkerd/linkerd-control-plane
   interval: 5m
   chart:
     spec:
