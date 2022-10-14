@@ -3,9 +3,6 @@ kind: Deployment
 metadata:
   name: realworld
   namespace: default
-  annotations:
-    "linkerd.io/inject": "enabled"
-    "config.linkerd.io/proxy-cpu-request": "100m"
 spec:
   minReadySeconds: 3
   replicas: 1
@@ -22,6 +19,9 @@ spec:
     metadata:
       labels:
         app: realworld
+      annotations:
+        "linkerd.io/inject": "enabled"
+        "config.linkerd.io/proxy-cpu-request": "100m"
     spec:
       imagePullSecrets:
       - name: docker-ghcr
