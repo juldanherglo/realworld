@@ -4,11 +4,10 @@ metadata:
   name: linkerd-viz
 spec:
   dependsOn:
-    - name: linkerd2
+    - name: linkerd-control-plane
   interval: 5m
   chart:
     spec:
-      version: "2.x"
       chart: linkerd-viz
       sourceRef:
         kind: HelmRepository
