@@ -4,7 +4,7 @@ namespace: linkerd
 configurations:
   - kustomizeconfig.yaml
 resources:
-  - namespace.yaml
+  #- namespace.yaml # created via terraform now for added secrets
   - linker-stable-repository.yaml
   - linkerd-crds-release.yaml
   - linkerd-release.yaml
