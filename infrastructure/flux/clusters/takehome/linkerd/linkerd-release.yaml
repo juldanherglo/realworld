@@ -28,4 +28,5 @@ spec:
       valuesKey: issuer.key
       targetPath: identity.issuer.tls.keyPEM
   values:
-    proxyInit.runAsRoot: true
+    proxyInit:
+      runAsRoot: true
