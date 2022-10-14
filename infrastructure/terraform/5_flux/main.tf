@@ -1,8 +1,3 @@
-locals {
-  ghcr_secret_name = "docker-ghcr"
-  karpenter_name   = "takehome"
-}
-
 provider "flux" {}
 
 provider "kubernetes" {
@@ -48,134 +43,6 @@ data "flux_sync" "main" {
 }
 
 # Kubernetes
-resource "kubernetes_namespace" "namespaces" {
-  for_each = toset(["realworld", "flux-system"])
-
-  metadata {
-    annotations = {
-      "linkerd.io/inject"                   = "enabled"
-      "config.linkerd.io/proxy-cpu-request" = "100m"
-    }
-
-    name = each.key
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-    ]
-  }
-}
-
-resource "kubectl_manifest" "karpenter_provisioner" {
-  yaml_body = <<-YAML
-  apiVersion: karpenter.sh/v1alpha5
-  kind: Provisioner
-  metadata:
-    name: default
-  spec:
-    requirements:
-      - key: "node.kubernetes.io/instance-type"
-        operator: In
-        values: ["m5.large"]
-    limits:
-      resources:
-        cpu: 1000
-    provider:
-      subnetSelector:
-        karpenter.sh/discovery: ${local.karpenter_name}
-      securityGroupSelector:
-        karpenter.sh/discovery: ${local.karpenter_name}
-      tags:
-        karpenter.sh/discovery: ${local.karpenter_name}
-    ttlSecondsAfterEmpty: 30
-  YAML
-
-  depends_on = [
-    kubernetes_namespace.namespaces["realworld"],
-  ]
-}
-
-resource "kubectl_manifest" "ghcr_secret" {
-  for_each = kubernetes_namespace.namespaces
-
-  yaml_body = <<-YAML
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: ${local.ghcr_secret_name}
-    namespace: ${each.key}
-    creationTimestamp: null
-  data:
-    .dockerconfigjson: ${data.sops_file.secrets_enc_yaml.data[".dockerconfigjson"]}
-  type: kubernetes.io/dockerconfigjson
-  YAML
-}
-
-resource "kubectl_manifest" "deployment" {
-  yaml_body = <<-YAML
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: realworld-db
-    namespace: realworld
-    creationTimestamp: null
-  data:
-    DATABASE_HOST: ${base64encode(data.terraform_remote_state.db.outputs.db.db_instance_address)}
-    DATABASE_PASSWORD: ${base64encode(data.terraform_remote_state.db.outputs.db.db_instance_password)}
-  YAML
-
-  depends_on = [
-    kubernetes_namespace.namespaces["realworld"],
-  ]
-}
-
-resource "kubectl_manifest" "realworld_loadtest" {
-  yaml_body = <<-YAML
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: realworld-loadtest
-    namespace: realworld
-  spec:
-    minReadySeconds: 3
-    replicas: 0
-    revisionHistoryLimit: 5
-    progressDeadlineSeconds: 60
-    strategy:
-      rollingUpdate:
-        maxUnavailable: 0
-      type: RollingUpdate
-    selector:
-      matchLabels:
-        app: realworld-loadtest
-    template:
-      metadata:
-        labels:
-          app: realworld-loadtest
-      spec:
-        containers:
-        - name: realworld-loadtest
-          image: busybox
-          imagePullPolicy: IfNotPresent
-          command:
-          - /bin/ash
-          - -c
-          - "while true; do wget -q -O- realworld:3000 >/dev/null 2>/dev/null; done"
-          resources:
-            limits:
-              cpu: 1000m
-              memory: 768Mi
-            requests:
-              cpu: 1000m
-              memory: 256Mi
-  YAML
-
-  depends_on = [
-    kubernetes_namespace.namespaces["realworld"],
-  ]
-}
-
 data "kubectl_file_documents" "install" {
   content = data.flux_install.main.content
 }
@@ -198,18 +65,12 @@ locals {
 }
 
 resource "kubectl_manifest" "install" {
-  for_each = { for v in local.install : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
-  depends_on = [
-    kubernetes_namespace.namespaces,
-  ]
+  for_each  = { for v in local.install : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
   yaml_body = each.value
 }
 
 resource "kubectl_manifest" "sync" {
-  for_each = { for v in local.sync : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
-  depends_on = [
-    kubernetes_namespace.namespaces,
-  ]
+  for_each  = { for v in local.sync : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
   yaml_body = each.value
 }
 

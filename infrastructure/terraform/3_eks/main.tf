@@ -140,6 +140,20 @@ provider "helm" {
   }
 }
 
+provider "kubectl" {
+  apply_retry_count      = 5
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  load_config_file       = false
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    # This requires the awscli to be installed locally where Terraform is executed
+    args = ["--profile", "takehome", "eks", "get-token", "--cluster-name", module.eks.cluster_id]
+  }
+}
+
 module "karpenter_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 4.21.1"
@@ -206,4 +220,34 @@ resource "helm_release" "karpenter" {
     name  = "controller.resources.requests.memory"
     value = "256Mi"
   }
+}
+
+# Workaround - https://github.com/hashicorp/terraform-provider-kubernetes/issues/1380#issuecomment-967022975
+resource "kubectl_manifest" "karpenter_provisioner" {
+  yaml_body = <<-YAML
+  apiVersion: karpenter.sh/v1alpha5
+  kind: Provisioner
+  metadata:
+    name: default
+  spec:
+    requirements:
+      - key: "node.kubernetes.io/instance-type"
+        operator: In
+        values: ["m5.large"]
+    limits:
+      resources:
+        cpu: 1000
+    provider:
+      subnetSelector:
+        karpenter.sh/discovery: ${local.name}
+      securityGroupSelector:
+        karpenter.sh/discovery: ${local.name}
+      tags:
+        karpenter.sh/discovery: ${local.name}
+    ttlSecondsAfterEmpty: 30
+  YAML
+
+  depends_on = [
+    helm_release.karpenter
+  ]
 }

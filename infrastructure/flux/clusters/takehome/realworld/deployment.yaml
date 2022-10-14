@@ -2,7 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: realworld
-  namespace: realworld
+  namespace: default
+  annotations:
+    "linkerd.io/inject": "enabled"
+    "config.linkerd.io/proxy-cpu-request": "100m"
 spec:
   minReadySeconds: 3
   replicas: 1
