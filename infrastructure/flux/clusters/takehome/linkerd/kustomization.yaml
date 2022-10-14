@@ -8,6 +8,7 @@ resources:
   - linker-stable-repository.yaml
   - linkerd-crds-release.yaml
   - linkerd-release.yaml
+  - namespace-viz.yaml
   - linkerd-viz-release.yaml
 secretGenerator:
   - name: linkerd-certs
