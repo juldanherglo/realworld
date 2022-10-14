@@ -3,9 +3,9 @@ kind: HelmRelease
 metadata:
   name: linkerd-viz
 spec:
-  #dependsOn:
-    #- name: linkerd-control-plane
-      #namespace: linkerd
+  dependsOn:
+    - name: linkerd-control-plane
+      namespace: linkerd
   interval: 5m
   chart:
     spec:
