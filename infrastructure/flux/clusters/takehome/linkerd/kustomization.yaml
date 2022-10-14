@@ -3,15 +3,15 @@ kind: Kustomization
 namespace: linkerd
 configurations:
   - kustomizeconfig.yaml
-resources:
-  - namespace.yaml
-  - linker-stable-repository.yaml
-  - linkerd-crds-release.yaml
-  - linkerd-release.yaml
-secretGenerator:
-  - name: linkerd-certs
-    files:
-      - ca.crt
-      - ca.key
-      - issuer.crt
-      - issuer.key
+resources: []
+  #- namespace.yaml
+  #- linker-stable-repository.yaml
+  #- linkerd-crds-release.yaml
+  #- linkerd-release.yaml
+#secretGenerator:
+  #- name: linkerd-certs
+    #files:
+      #- ca.crt
+      #- ca.key
+      #- issuer.crt
+      #- issuer.key
