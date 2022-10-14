@@ -160,10 +160,8 @@ module "karpenter_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 4.21.1"
 
-  role_name                              = "karpenter-controller-${local.name}"
-  attach_karpenter_controller_policy     = true
-  attach_cert_manager_policy             = true
-  attach_load_balancer_controller_policy = true
+  role_name                          = "karpenter-controller-${local.name}"
+  attach_karpenter_controller_policy = true
 
   karpenter_controller_cluster_id = module.eks.cluster_id
   karpenter_controller_ssm_parameter_arns = [
@@ -179,6 +177,41 @@ module "karpenter_irsa" {
       namespace_service_accounts = ["karpenter:karpenter"]
     }
   }
+}
+
+module "cert_manager_irsa_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 4.21.1"
+
+  role_name                     = "cert-manager"
+  attach_cert_manager_policy    = true
+  cert_manager_hosted_zone_arns = ["arn:aws:route53:::hostedzone/IClearlyMadeThisUp"]
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:cert-manager"]
+    }
+  }
+
+  tags = local.tags
+}
+
+module "load_balancer_controller_irsa_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 4.21.1"
+
+  role_name                              = "load-balancer-controller"
+  attach_load_balancer_controller_policy = true
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
+    }
+  }
+
+  tags = local.tags
 }
 
 resource "aws_iam_instance_profile" "karpenter" {
