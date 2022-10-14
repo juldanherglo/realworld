@@ -12,6 +12,20 @@ provider "kubernetes" {
   }
 }
 
+provider "kubectl" {
+  apply_retry_count      = 5
+  host                   = data.terraform_remote_state.eks.outputs.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(data.terraform_remote_state.eks.outputs.eks.cluster_certificate_authority_data)
+  load_config_file       = false
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    # This requires the awscli to be installed locally where Terraform is executed
+    args = ["--profile", "takehome", "eks", "get-token", "--cluster-name", data.terraform_remote_state.eks.outputs.eks.cluster_id]
+  }
+}
+
 provider "github" {
   owner = var.github_owner
   token = data.sops_file.secrets_enc_yaml.data["github_token"]
