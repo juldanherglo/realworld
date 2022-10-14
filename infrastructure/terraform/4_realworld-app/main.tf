@@ -113,6 +113,40 @@ resource "kubectl_manifest" "flux_system_namespace" {
   YAML
 }
 
+resource "kubectl_manifest" "linkerd_namespace" {
+  yaml_body = <<-YAML
+  apiVersion: v1
+  kind: Namespace
+  metadata:
+    labels:
+      config.linkerd.io/admission-webhooks: disabled
+      kubernetes.io/metadata.name: linkerd
+      kustomize.toolkit.fluxcd.io/name: flux-system
+      kustomize.toolkit.fluxcd.io/namespace: flux-system
+    name: linkerd
+  YAML
+}
+
+resource "kubectl_manifest" "linkerd_secret" {
+  yaml_body = <<-YAML
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: linkerd-certs
+    namespace: linkerd
+    creationTimestamp: null
+  data:
+    ca.crt: ${base64encode(data.sops_file.secrets_enc_yaml.data["ca.crt"])}
+    ca.key: ${base64encode(data.sops_file.secrets_enc_yaml.data["ca.key"])}
+    issuer.crt: ${base64encode(data.sops_file.secrets_enc_yaml.data["issuer.crt"])}
+    issuer.key: ${base64encode(data.sops_file.secrets_enc_yaml.data["issuer.key"])}
+  YAML
+  depends_on = [
+    kubectl_manifest.linkerd_namespace
+  ]
+}
+
+
 resource "kubectl_manifest" "ghcr_secret" {
   for_each = toset(["default", "flux-system"])
 
