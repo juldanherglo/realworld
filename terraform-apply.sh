@@ -2,7 +2,9 @@
 
 set -euo pipefail
 
-for dir in infrastructure/terraform/*; do
+cd infrastructure/terraform
+
+find . -type d -maxdepth 1 -mindepth 1 | sort | grep -v '1_base' | while read -r dir; do
   echo "$dir"
   cd "$dir"
 
