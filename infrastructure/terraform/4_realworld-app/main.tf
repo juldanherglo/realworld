@@ -170,6 +170,9 @@ resource "kubectl_manifest" "realworld_loadtest" {
       metadata:
         labels:
           app: realworld-loadtest
+        annotations:
+          linkerd.io/inject: enabled
+          config.linkerd.io/proxy-cpu-request: 100m
       spec:
         containers:
         - name: realworld-loadtest
