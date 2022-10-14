@@ -1,9 +1,14 @@
 data "aws_partition" "current" {}
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
 
 locals {
   name            = "takehome"
   cluster_version = "1.23"
   partition       = data.aws_partition.current.partition
+  dns_suffix      = data.aws_partition.current.dns_suffix
+  region          = data.aws_region.current.name
+  account_id      = data.aws_caller_identity.current.account_id
 
   tags = {
     Name = local.name
@@ -91,6 +96,14 @@ module "eks" {
       type                          = "ingress"
       source_cluster_security_group = true
     }
+    all = {
+      description                   = "All"
+      protocol                      = "-1"
+      from_port                     = 0
+      to_port                       = 0
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
     ingress_self_all = {
       description = "Node to node all ports/protocols"
       protocol    = "-1"
@@ -121,8 +134,9 @@ module "eks" {
       iam_role_additional_policies = [
         # Required by Karpenter
         "arn:${local.partition}:iam::aws:policy/AmazonSSMManagedInstanceCore",
-
         "arn:${local.partition}:iam::aws:policy/CloudWatchLogsFullAccess",
+        "arn:aws:iam::${local.account_id}:policy/Load_Balancer_Controller",
+        #aws_iam_policy.load_balancer_controller.arn,
       ]
     }
   }
@@ -133,6 +147,10 @@ module "eks" {
     # (i.e. - at most, only one security group should have this tag in your account)
     "karpenter.sh/discovery" = local.name
   })
+
+  depends_on = [
+    aws_iam_policy.load_balancer_controller,
+  ]
 }
 
 ################################################################################
@@ -270,6 +288,47 @@ resource "helm_release" "karpenter" {
   }
 }
 
+resource "helm_release" "aws-load-balancer-controller" {
+  namespace        = "kube-system"
+  create_namespace = false
+
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  version    = "1.4.5"
+
+  set {
+    name  = "clusterName"
+    value = module.eks.cluster_id
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = true
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = "aws-load-balancer-controller"
+  }
+
+  set {
+    name  = "region"
+    value = local.region
+  }
+
+  set {
+    name  = "vpcId"
+    value = data.terraform_remote_state.vpc.outputs.vpc.vpc_id
+  }
+
+  set {
+    name  = "image.repository"
+    value = "602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon/aws-load-balancer-controller"
+  }
+}
+
+
 # Workaround - https://github.com/hashicorp/terraform-provider-kubernetes/issues/1380#issuecomment-967022975
 resource "kubectl_manifest" "karpenter_provisioner" {
   yaml_body = <<-YAML
@@ -298,4 +357,246 @@ resource "kubectl_manifest" "karpenter_provisioner" {
   depends_on = [
     helm_release.karpenter
   ]
+}
+
+# https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/docs/install/iam_policy.json
+data "aws_iam_policy_document" "load_balancer_controller" {
+  statement {
+    actions = ["iam:CreateServiceLinkedRole"]
+    #tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = ["*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "iam:AWSServiceName"
+      values   = ["elasticloadbalancing.${local.dns_suffix}"]
+    }
+  }
+
+  statement {
+    actions = [
+      "ec2:DescribeAccountAttributes",
+      "ec2:DescribeAddresses",
+      "ec2:DescribeAvailabilityZones",
+      "ec2:DescribeInternetGateways",
+      "ec2:DescribeVpcs",
+      "ec2:DescribeVpcPeeringConnections",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeInstances",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeTags",
+      "ec2:GetCoipPoolUsage",
+      "ec2:DescribeCoipPools",
+      "elasticloadbalancing:DescribeLoadBalancers",
+      "elasticloadbalancing:DescribeLoadBalancerAttributes",
+      "elasticloadbalancing:DescribeListeners",
+      "elasticloadbalancing:DescribeListenerCertificates",
+      "elasticloadbalancing:DescribeSSLPolicies",
+      "elasticloadbalancing:DescribeRules",
+      "elasticloadbalancing:DescribeTargetGroups",
+      "elasticloadbalancing:DescribeTargetGroupAttributes",
+      "elasticloadbalancing:DescribeTargetHealth",
+      "elasticloadbalancing:DescribeTags",
+    ]
+    #tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "cognito-idp:DescribeUserPoolClient",
+      "acm:ListCertificates",
+      "acm:DescribeCertificate",
+      "iam:ListServerCertificates",
+      "iam:GetServerCertificate",
+      "waf-regional:GetWebACL",
+      "waf-regional:GetWebACLForResource",
+      "waf-regional:AssociateWebACL",
+      "waf-regional:DisassociateWebACL",
+      "wafv2:GetWebACL",
+      "wafv2:GetWebACLForResource",
+      "wafv2:AssociateWebACL",
+      "wafv2:DisassociateWebACL",
+      "shield:GetSubscriptionState",
+      "shield:DescribeProtection",
+      "shield:CreateProtection",
+      "shield:DeleteProtection",
+    ]
+    #tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:RevokeSecurityGroupIngress",
+      "ec2:CreateSecurityGroup",
+    ]
+    #tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = ["*"]
+  }
+
+  statement {
+    actions   = ["ec2:CreateTags"]
+    resources = ["arn:${local.partition}:ec2:*:*:security-group/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "ec2:CreateAction"
+      values   = ["CreateSecurityGroup"]
+    }
+
+    condition {
+      test     = "Null"
+      variable = "aws:RequestTag/elbv2.k8s.aws/cluster"
+      values   = ["false"]
+    }
+  }
+
+  statement {
+    actions = [
+      "ec2:CreateTags",
+      "ec2:DeleteTags",
+    ]
+    resources = ["arn:${local.partition}:ec2:*:*:security-group/*"]
+
+    condition {
+      test     = "Null"
+      variable = "aws:RequestTag/elbv2.k8s.aws/cluster"
+      values   = ["true"]
+    }
+
+    condition {
+      test     = "Null"
+      variable = "aws:ResourceTag/elbv2.k8s.aws/cluster"
+      values   = ["false"]
+    }
+  }
+
+  statement {
+    actions = [
+      "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:RevokeSecurityGroupIngress",
+      "ec2:DeleteSecurityGroup",
+    ]
+    #tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = ["*"]
+
+    condition {
+      test     = "Null"
+      variable = "aws:ResourceTag/elbv2.k8s.aws/cluster"
+      values   = ["false"]
+    }
+  }
+
+  statement {
+    actions = [
+      "elasticloadbalancing:CreateLoadBalancer",
+      "elasticloadbalancing:CreateTargetGroup",
+    ]
+    #tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = ["*"]
+
+    condition {
+      test     = "Null"
+      variable = "aws:RequestTag/elbv2.k8s.aws/cluster"
+      values   = ["false"]
+    }
+  }
+
+  statement {
+    actions = [
+      "elasticloadbalancing:CreateListener",
+      "elasticloadbalancing:DeleteListener",
+      "elasticloadbalancing:CreateRule",
+      "elasticloadbalancing:DeleteRule",
+    ]
+    #tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "elasticloadbalancing:AddTags",
+      "elasticloadbalancing:RemoveTags",
+    ]
+    resources = [
+      "arn:${local.partition}:elasticloadbalancing:*:*:targetgroup/*/*",
+      "arn:${local.partition}:elasticloadbalancing:*:*:loadbalancer/net/*/*",
+      "arn:${local.partition}:elasticloadbalancing:*:*:loadbalancer/app/*/*",
+    ]
+
+    condition {
+      test     = "Null"
+      variable = "aws:RequestTag/elbv2.k8s.aws/cluster"
+      values   = ["true"]
+    }
+
+    condition {
+      test     = "Null"
+      variable = "aws:ResourceTag/elbv2.k8s.aws/cluster"
+      values   = ["false"]
+    }
+  }
+
+  statement {
+    actions = [
+      "elasticloadbalancing:AddTags",
+      "elasticloadbalancing:RemoveTags",
+    ]
+    resources = [
+      "arn:${local.partition}:elasticloadbalancing:*:*:listener/net/*/*/*",
+      "arn:${local.partition}:elasticloadbalancing:*:*:listener/app/*/*/*",
+      "arn:${local.partition}:elasticloadbalancing:*:*:listener-rule/net/*/*/*",
+      "arn:${local.partition}:elasticloadbalancing:*:*:listener-rule/app/*/*/*",
+    ]
+  }
+
+  statement {
+    actions = [
+      "elasticloadbalancing:ModifyLoadBalancerAttributes",
+      "elasticloadbalancing:SetIpAddressType",
+      "elasticloadbalancing:SetSecurityGroups",
+      "elasticloadbalancing:SetSubnets",
+      "elasticloadbalancing:DeleteLoadBalancer",
+      "elasticloadbalancing:ModifyTargetGroup",
+      "elasticloadbalancing:ModifyTargetGroupAttributes",
+      "elasticloadbalancing:DeleteTargetGroup",
+    ]
+    #tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = ["*"]
+
+    condition {
+      test     = "Null"
+      variable = "aws:ResourceTag/elbv2.k8s.aws/cluster"
+      values   = ["false"]
+    }
+  }
+
+  statement {
+    actions = [
+      "elasticloadbalancing:RegisterTargets",
+      "elasticloadbalancing:DeregisterTargets",
+    ]
+    resources = ["arn:${local.partition}:elasticloadbalancing:*:*:targetgroup/*/*"]
+  }
+
+  statement {
+    actions = [
+      "elasticloadbalancing:SetWebAcl",
+      "elasticloadbalancing:ModifyListener",
+      "elasticloadbalancing:AddListenerCertificates",
+      "elasticloadbalancing:RemoveListenerCertificates",
+      "elasticloadbalancing:ModifyRule",
+    ]
+    #tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "load_balancer_controller" {
+  name        = "Load_Balancer_Controller"
+  description = "Provides permissions for AWS Load Balancer Controller addon"
+  policy      = data.aws_iam_policy_document.load_balancer_controller.json
 }
