@@ -38,6 +38,8 @@ module "eks" {
       resources        = ["secrets"]
     }
   ]
+
+  cloudwatch_log_group_retention_in_days = 3
   cluster_enabled_log_types = [
     # TODO: re-enable
     #"audit",
@@ -77,6 +79,15 @@ module "eks" {
       protocol                      = "tcp"
       from_port                     = 4443
       to_port                       = 4443
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
+    # Control plane polling linkerd tap api https://linkerd.io/2.12/tasks/troubleshooting/#l5d-tap-api
+    ingress_tap_api_tcp = {
+      description                   = "Control plane polling tap-api"
+      protocol                      = "tcp"
+      from_port                     = 8089
+      to_port                       = 8089
       type                          = "ingress"
       source_cluster_security_group = true
     }
