@@ -59,7 +59,7 @@ jobs:
             echo "$dir"
             cd "$dir"
 
-            terraform init
+            terraform init -backend=false
             terraform validate -no-color
             terraform fmt -check
 
