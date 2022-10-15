@@ -15,3 +15,5 @@ find . -type d -maxdepth 1 -mindepth 1 | sort | grep -v '1_base' | while read -r
 
   echo
 done
+
+aws --profile takehome eks update-kubeconfig --region eu-west-1 --name takehome
