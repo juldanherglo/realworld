@@ -29,3 +29,15 @@ resource "aws_kms_key" "sops" {
   description             = "sops"
   deletion_window_in_days = 7
 }
+
+
+provider "github" {
+  owner = var.github_owner
+  token = data.sops_file.secrets_enc_yaml.data["github_token"]
+}
+
+resource "github_actions_secret" "renovate_secret" {
+  repository      = var.repository_name
+  secret_name     = "RENOVATE_TOKEN"
+  plaintext_value = data.sops_file.secrets_enc_yaml.data["github_token"]
+}
