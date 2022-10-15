@@ -2,15 +2,17 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-  generation: 1
+    cert-manager.io/issuer: letsencrypt-staging
+    kubernetes.io/ingress.class: nginx
   name: realworld
   namespace: default
 spec:
-  ingressClassName: alb
+  tls:
+  - hosts:
+    - realworld.takehome.local
+    secretName: web-ssl
   rules:
-  - host: www.foo.com
+  - host: realworld.takehome.local
     http:
       paths:
       - backend:

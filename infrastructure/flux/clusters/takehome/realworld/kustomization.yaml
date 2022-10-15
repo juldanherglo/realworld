@@ -4,7 +4,8 @@ resources:
   - hpa.yaml
   - deployment.yaml
   - service.yaml
-  #- alb.yaml
+  - cert-secret.yaml
+  - ingress.yaml
   - image-repo.yaml
   - image-policy.yaml
   - image-update-automation.yaml
