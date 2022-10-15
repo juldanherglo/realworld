@@ -502,6 +502,8 @@ github.com/gobuffalo/mw-paramlogger v0.0.0-20181005191442-d6ee392ec72e/go.mod h1
 github.com/gobuffalo/mw-paramlogger v0.0.0-20190129202837-395da1998525/go.mod h1:gEo/ABCsKqvpp/KCxN2AIzDEe0OJUXbJ9293FYrXw+w=
 github.com/gobuffalo/mw-paramlogger v1.0.0 h1:6dQKwAKNX++syXe5s1G7BDq5Hw6QxW5+QYgY7k4wbcU=
 github.com/gobuffalo/mw-paramlogger v1.0.0/go.mod h1:3OIdMvIb7FyIG08b1tXQK64F2SWAOwSIBAtHuGMBjtw=
+github.com/gobuffalo/mw-paramlogger v1.0.1 h1:UI94qQEjCRRrVCW9eFybB+S91nbEl6PmOXlccW971+8=
+github.com/gobuffalo/mw-paramlogger v1.0.1/go.mod h1:h8uLYbTgFF/JV2A3igu7ZkHTHBgD13KU8VhB8ugZ55w=
 github.com/gobuffalo/mw-tokenauth v0.0.0-20181001105134-8545f626c189/go.mod h1:UqBF00IfKvd39ni5+yI5MLMjAf4gX7cDKN/26zDOD6c=
 github.com/gobuffalo/mw-tokenauth v0.0.0-20190129201951-95847f29c5c8/go.mod h1:n2oa93LHGD94hGI+PoJO+6cf60DNrXrAIv9L/Ke3GXc=
 github.com/gobuffalo/nulls v0.0.0-20190305142546-85f3c9250d87/go.mod h1:KhaLCW+kFA/G97tZkmVkIxhRw3gvZszJn7JjPLI3gtI=
