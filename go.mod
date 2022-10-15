@@ -5,7 +5,7 @@ go 1.16
 
 require (
 	github.com/felixge/httpsnoop v1.0.2 // indirect
-	github.com/gobuffalo/buffalo v0.18.1
+	github.com/gobuffalo/buffalo v0.18.9
 	github.com/gobuffalo/buffalo-pop/v3 v3.0.2
 	github.com/gobuffalo/envy v1.10.1
 	github.com/gobuffalo/mw-csrf v1.0.0
@@ -13,9 +13,9 @@ require (
 	github.com/gobuffalo/mw-i18n v1.1.0
 	github.com/gobuffalo/mw-paramlogger v1.0.0
 	github.com/gobuffalo/packr/v2 v2.8.0
-	github.com/gobuffalo/pop/v6 v6.0.1
+	github.com/gobuffalo/pop/v6 v6.0.6
 	github.com/gobuffalo/suite/v3 v3.0.0
-	github.com/gobuffalo/validate/v3 v3.3.1
+	github.com/gobuffalo/validate/v3 v3.3.2
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/gosimple/slug v1.10.0
 	github.com/markbates/grift v1.5.0
