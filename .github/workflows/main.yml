@@ -4,12 +4,14 @@ on:
   push:
     branches:
       - main
+    pull_request:
 
 env:
   IMAGE: ghcr.io/${{ github.repository_owner }}/realworld
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -39,3 +41,29 @@ jobs:
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: terraform checks
+        run: |-
+          set -euo pipefail
+
+          cd infrastructure/terraform
+
+          find . -type d -maxdepth 1 -mindepth 1 | sort | while read -r dir; do
+            echo "$dir"
+            cd "$dir"
+
+            terraform init
+            terraform validate -no-color
+            terraform fmt -check
+
+            cd - > /dev/null
+
+            echo
+          done
