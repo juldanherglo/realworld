@@ -4,7 +4,7 @@ set -euo pipefail
 
 cd infrastructure/terraform
 
-find . -type d -maxdepth 1 -mindepth 1 | sort -r | grep -vE '5_flux|1_base' | while read -r dir; do
+find . -type d -maxdepth 1 -mindepth 1 | sort -r | grep -v '1_base' | while read -r dir; do
   echo "$dir"
   cd "$dir"
 
