@@ -17,3 +17,8 @@ find . -type d -maxdepth 1 -mindepth 1 | sort | grep -v '1_base' | while read -r
 done
 
 aws --profile takehome eks update-kubeconfig --region eu-west-1 --name takehome
+
+echo "Lookup:"
+echo "  kubectl -n ingress-nginx get svc ingress-nginx-controller"
+echo ""
+echo "and create a /etc/hosts entry for realworld.takehome.local"
