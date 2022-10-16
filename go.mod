@@ -8,11 +8,12 @@ require (
 	github.com/gobuffalo/buffalo-pop/v3 v3.0.6
 	github.com/gobuffalo/envy v1.10.2
 	github.com/gobuffalo/mw-csrf v1.0.1
-	github.com/gobuffalo/mw-forcessl v0.0.0-20200131175327-94b2bd771862
+	github.com/gobuffalo/mw-forcessl v1.0.1
 	github.com/gobuffalo/mw-i18n v1.1.0
 	github.com/gobuffalo/mw-paramlogger v1.0.1
 	github.com/gobuffalo/packr/v2 v2.8.3
 	github.com/gobuffalo/pop/v6 v6.0.8
+	github.com/gobuffalo/suite/v4 v4.0.3
 	github.com/gobuffalo/validate/v3 v3.3.3
 	github.com/gofrs/uuid v4.3.0+incompatible
 	github.com/gosimple/slug v1.13.1
@@ -47,7 +48,6 @@ require (
 	github.com/gobuffalo/plush/v4 v4.1.16 // indirect
 	github.com/gobuffalo/pop/v5 v5.3.2 // indirect
 	github.com/gobuffalo/refresh v1.13.1 // indirect
-	github.com/gobuffalo/suite/v4 v4.0.3 // indirect
 	github.com/gobuffalo/tags/v3 v3.1.4 // indirect
 	github.com/gofrs/uuid/v3 v3.1.2 // indirect
 	github.com/gorilla/css v1.0.0 // indirect

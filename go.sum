@@ -507,6 +507,8 @@ github.com/gobuffalo/mw-csrf v1.0.1/go.mod h1:JAbogWdDR+194rn3Rt8/qf/9RTmFvml9FX
 github.com/gobuffalo/mw-forcessl v0.0.0-20180802152810-73921ae7a130/go.mod h1:JvNHRj7bYNAMUr/5XMkZaDcw3jZhUZpsmzhd//FFWmQ=
 github.com/gobuffalo/mw-forcessl v0.0.0-20200131175327-94b2bd771862 h1:DBOFjRlPu/r+XtxP0/vFLb0FYumvjHA+q+YdO3PwNmw=
 github.com/gobuffalo/mw-forcessl v0.0.0-20200131175327-94b2bd771862/go.mod h1:tApQu7ScNNOp0xGMOijK49vG5//IYVRWnlms2so3wg0=
+github.com/gobuffalo/mw-forcessl v1.0.1 h1:VBzskcAhUravHGn2nw+01oWrButh+WGlDOcBNcnHN40=
+github.com/gobuffalo/mw-forcessl v1.0.1/go.mod h1:2jKuFNdAg/rWMV2LvuJ2PPhI9vV/Fc5MJfae5bcYJTQ=
 github.com/gobuffalo/mw-i18n v0.0.0-20180802152014-e3060b7e13d6/go.mod h1:91AQfukc52A6hdfIfkxzyr+kpVYDodgAeT5cjX1UIj4=
 github.com/gobuffalo/mw-i18n v0.0.0-20181027200759-09e0c99be4d3/go.mod h1:1PpGPgqP8VsfUppgBA9FrTOXjI6X9gjqhh/8dmg48lg=
 github.com/gobuffalo/mw-i18n v0.0.0-20190129204410-552713a3ebb4/go.mod h1:rBg2eHxsyxVjtYra6fGy4GSF5C8NysOvz+Znnzk42EM=
@@ -1320,6 +1322,7 @@ github.com/unrolled/secure v0.0.0-20190103195806-76e6d4e9b90c/go.mod h1:mnPT77IA
 github.com/unrolled/secure v1.0.7/go.mod h1:uGc1OcRF8gCVBA+ANksKmvM85Hka6SZtQIbrKc3sHS4=
 github.com/unrolled/secure v1.0.9 h1:BWRuEb1vDrBFFDdbCnKkof3gZ35I/bnHGyt0LB0TNyQ=
 github.com/unrolled/secure v1.0.9/go.mod h1:fO+mEan+FLB0CdEnHf6Q4ZZVNqG+5fuLFnP8p0BXDPI=
+github.com/unrolled/secure v1.11.0/go.mod h1:BmF5hyM6tXczk3MpQkFf1hpKSRqCyhqcbiQtiAF7+40=
 github.com/unrolled/secure v1.13.0 h1:sdr3Phw2+f8Px8HE5sd1EHdj1aV3yUwed/uZXChLFsk=
 github.com/unrolled/secure v1.13.0/go.mod h1:BmF5hyM6tXczk3MpQkFf1hpKSRqCyhqcbiQtiAF7+40=
 github.com/urfave/negroni v1.0.0 h1:kIimOitoypq34K7TG7DUaJ9kq/N4Ofuwi1sjz0KipXc=
