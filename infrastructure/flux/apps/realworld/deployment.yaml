@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   minReadySeconds: 3
-  replicas: 1
+  replicas: 0 # the real deployment will be create by flagger
   revisionHistoryLimit: 5
   progressDeadlineSeconds: 60
   strategy:
