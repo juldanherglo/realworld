@@ -4,6 +4,7 @@ This is a fork from https://github.com/remast/gobuff_realworld_example_app
 
 
 ![Architecture](docs/toptal-takehome-arch.png "Architecture")
+
 As shown in the picture, we have a VPC which get divided into public/private/db
 subnet groups. Each group has three subnets for three availability zones.
 
