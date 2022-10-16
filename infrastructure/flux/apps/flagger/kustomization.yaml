@@ -6,3 +6,4 @@ configurations:
 resources:
   - flagger-repository.yaml
   - flagger-release.yaml
+  - flagger-loadtester-release.yaml
