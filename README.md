@@ -4,27 +4,27 @@ This is a fork from https://github.com/remast/gobuff_realworld_example_app
 
 
 ![Architecture](docs/toptal-takehome-arch.png "Architecture")
-As shown in the picture, we have VPC which get divided into public/private/db
+As shown in the picture, we have a VPC which get divided into public/private/db
 subnet groups. Each group has three subnets for three availability zones.
 
-In the public zones we have a network load balancer that works as an ingress
+In the public subnets we have a network load balancer that works as an ingress
 for the kubernetes cluster.  Additionally, we have NAT gateways so that the
 ec2 / pods in the private subnets can talk to the internet and e.g. download
 container images.
 
 The node-group for the eks cluster lives in the private subnets. It is auto-scaled by [karpenter](https://karpenter.sh/).
-The cluster is configured that the control plane and all the pods are synced to cloudwatch logs.
+The cluster is configured so that the control plane and all the pods are synced to cloudwatch logs.
 
-In the DB subnets we have a multi-az RDS which automatically creates backups every night.
+In the DB subnets we have a multi-az RDS which automatically creates a backup every night.
 The DB writes its logs to cloudwatch logs as well.
 
 # Github
 In github we have workflows for:
-* [renovatebot](https://github.com/renovatebot/renovate) for keep all versions up-to-date
+* [renovatebot](https://github.com/renovatebot/renovate) for keeping all versions up-to-date
 * [semantic-release](https://github.com/semantic-release/semantic-release) for
-  having release with meaningful version numbers by relying on [conventional
+  having releases with meaningful version numbers by relying on [conventional
   commits](https://www.conventionalcommits.org/en/v1.0.0/)
-* build a new container image with the app
+* build a new container image for the app
 * scanning the container for vulnerabilities with [grype](https://github.com/anchore/grype)
 * upload newly build container image into github container registry
 * terraform linters, e.g. `terraform validate`, `tflint`, `tfsec`
@@ -39,7 +39,7 @@ cluster is not needed anymore it can be destroyed with `terraform-destroy.sh`.
 The terraform files are in `infrastructure/terraform`.
 
 Since we don't have an official dns domain, after the apply we need to:
-1) determine name of the network loadbalancer: `kubectl -n ingress-nginx get svc ingress-nginx-controller`
+1) determine the name of the network loadbalancer: `kubectl -n ingress-nginx get svc ingress-nginx-controller`
 2) lookup its IPs: `host af1bed0fa00784cab931708741826eab-1943719008.eu-west-1.elb.amazonaws.com`
 3) add an entry in `/etc/hosts`, e.g: `34.242.148.29 realworld.takehome.local`
 4) be sure to ignore invalid tls certificates, e.g. `curl -k https://realworld.takehome.local/` or type `thisisunsafe` in chrome
