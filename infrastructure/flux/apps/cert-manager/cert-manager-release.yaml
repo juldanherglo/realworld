@@ -6,6 +6,7 @@ spec:
   interval: 5m
   chart:
     spec:
+      version: "1.x"
       chart: cert-manager
       sourceRef:
         kind: HelmRepository
