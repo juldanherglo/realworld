@@ -9,7 +9,6 @@ spec:
   interval: 5m
   chart:
     spec:
-      version: "30.x"
       chart: linkerd-viz
       sourceRef:
         kind: HelmRepository

@@ -6,7 +6,6 @@ spec:
   interval: 5m
   chart:
     spec:
-      version: "1.x"
       chart: linkerd-crds
       sourceRef:
         kind: HelmRepository
