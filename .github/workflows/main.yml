@@ -60,9 +60,9 @@ jobs:
         if: steps.version.outputs.version != 'skip'
         uses: anchore/scan-action@v3
         with:
-          image: $IMAGE:${{ steps.version.outputs.version }}
+          image: ${{ IMAGE }}:${{ steps.version.outputs.version }}
 
-      - name: Get Version
+      - name: Release
         if: steps.version.outputs.version != 'skip'
         run: |
           cp .releaserc-full-release.yaml .releaserc.yaml
