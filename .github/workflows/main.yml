@@ -59,7 +59,6 @@ jobs:
 
       - name: Release
         if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.version.outputs.version != 'skip'
-        if: steps.version.outputs.version != 'skip'
         run: |
           cp .releaserc-full-release.yaml .releaserc.yaml
           npx semantic-release
