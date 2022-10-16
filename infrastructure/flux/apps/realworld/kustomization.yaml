@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - hpa.yaml
   - deployment.yaml
+  - pdb.yaml
   - service.yaml
   - cert-secret.yaml
   - ingress.yaml
