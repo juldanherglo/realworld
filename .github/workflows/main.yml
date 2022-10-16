@@ -37,10 +37,19 @@ jobs:
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
-      - name: Release
-        run: npx semantic-release
+      - name: Get Version
+        run: |
+          cp .releaserc-dump-version.yaml .releaserc.yaml
+          npx semantic-release --dry-run --no-ci
+          cat .VERSION
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      #- name: Release
+        #run: npx semantic-release
+        #env:
+          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   terraform:
     runs-on: ubuntu-latest
     steps:
