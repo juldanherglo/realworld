@@ -127,5 +127,5 @@ jobs:
         run: |-
           buffalo test
 
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+      #- name: golangci-lint
+        #uses: golangci/golangci-lint-action@v3
