@@ -15,7 +15,7 @@ require (
 	github.com/gobuffalo/packr/v2 v2.8.3
 	github.com/gobuffalo/pop/v6 v6.0.6
 	github.com/gobuffalo/suite/v3 v3.0.0
-	github.com/gobuffalo/validate/v3 v3.3.2
+	github.com/gobuffalo/validate/v3 v3.3.3
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/gosimple/slug v1.13.1
 	github.com/karrick/godirwalk v1.16.1 // indirect
