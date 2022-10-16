@@ -1,0 +1,15 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: linkerd-smi
+spec:
+  dependsOn:
+    - name: linkerd-control-plane
+  interval: 5m
+  chart:
+    spec:
+      chart: linkerd-smi
+      sourceRef:
+        kind: HelmRepository
+        name: linkerd-smi
+      interval: 60m

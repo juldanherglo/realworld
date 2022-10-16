@@ -8,3 +8,5 @@ resources:
   - linker-stable-repository.yaml
   - linkerd-crds-release.yaml
   - linkerd-release.yaml
+  - linkerd-smi-repository.yaml
+  - linkerd-smi-release.yaml
