@@ -215,7 +215,7 @@ resource "kubectl_manifest" "realworld_loadtest" {
           command:
           - /bin/ash
           - -c
-          - "while true; do wget -q -O- realworld:3000 >/dev/null 2>/dev/null; done"
+          - "while true; do wget -q -O- realworld-primary:3000 >/dev/null 2>/dev/null; done"
           resources:
             limits:
               cpu: 1000m
