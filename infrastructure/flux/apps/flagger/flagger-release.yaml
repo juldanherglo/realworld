@@ -13,6 +13,6 @@ spec:
       interval: 60m
   values:
     meshProvider: linkerd
-    metricsServer: http://linkerd-prometheus:9090
+    metricsServer: http://prometheus.linkerd-viz.svc:9090
     crd:
-      create: true
+      create: false
