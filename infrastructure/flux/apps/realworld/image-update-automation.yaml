@@ -21,6 +21,6 @@ spec:
     kind: GitRepository
     name: flux-system
   update:
-    path: ./infrastructure/flux/clusters/takehome/realworld
+    path: ./infrastructure/flux/apps/realworld
     strategy: Setters
 
