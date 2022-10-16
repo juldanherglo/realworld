@@ -1,17 +1,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: flagger
+  name: flagger-crds
   namespace: flux-system
 spec:
   interval: 10m0s
-  dependsOn:
-    - name: linkerd-viz
-    - name: flagger-crds
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./infrastructure/flux/apps/flagger
+  path: ./infrastructure/flux/apps/flagger-crds
   prune: true
   wait: true
   timeout: 5m0s
