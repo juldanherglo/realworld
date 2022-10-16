@@ -19,7 +19,7 @@ require (
 	github.com/gosimple/slug v1.13.1
 	github.com/markbates/grift v1.5.0
 	github.com/pkg/errors v0.9.1
-	github.com/unrolled/secure v1.0.9
+	github.com/unrolled/secure v1.13.0
 	golang.org/x/crypto v0.0.0-20221012134737-56aed061732a
 )
 
