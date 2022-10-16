@@ -1,7 +1,7 @@
 module gobuff_realworld_example_app
 
 // +heroku goVersion go1.16
-go 1.16
+go 1.19
 
 require (
 	github.com/felixge/httpsnoop v1.0.2 // indirect
