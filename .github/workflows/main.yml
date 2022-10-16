@@ -93,7 +93,7 @@ jobs:
             echo
           done
       - name: tfsec
-        uses: aquasecurity/tfsec-action@v1.0.0
+        uses: aquasecurity/tfsec-action@v1.0.2
 
       - uses: terraform-linters/setup-tflint@v2
         name: Setup TFLint
