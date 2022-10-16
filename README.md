@@ -56,6 +56,11 @@ rollout certain metrics are fullfilled:
 * minimum of 99% of non 5xx responses
 * maximum of req duration for P99 is 500ms
 
+The progress of the canary release can be observed with:
+```
+watch kubectl get canary
+```
+
 # Logs and Metrics
 Apart from the cloudwatch logs we can see metrics like req duration or success rate in the linkerd viz dashboard:
 ![linkerd](docs/loadtest-linkerd.png "linkerd")
