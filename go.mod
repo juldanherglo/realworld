@@ -1,7 +1,7 @@
 module gobuff_realworld_example_app
 
 // +heroku goVersion go1.16
-go 1.16
+go 1.19
 
 require (
 	github.com/felixge/httpsnoop v1.0.2 // indirect
@@ -16,7 +16,7 @@ require (
 	github.com/gobuffalo/pop/v6 v6.0.6
 	github.com/gobuffalo/suite/v3 v3.0.0
 	github.com/gobuffalo/validate/v3 v3.3.3
-	github.com/gofrs/uuid v4.2.0+incompatible
+	github.com/gofrs/uuid v4.3.0+incompatible
 	github.com/gosimple/slug v1.13.1
 	github.com/karrick/godirwalk v1.16.1 // indirect
 	github.com/markbates/grift v1.5.0
