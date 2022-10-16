@@ -38,17 +38,37 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
       - name: Get Version
+        id: version
         run: |
           cp .releaserc-dump-version.yaml .releaserc.yaml
           npx semantic-release --dry-run --no-ci
-          cat .VERSION
+          if [ -e .VERSION ]; then
+            echo "::set-output name=version::$(cat .VERSION)"
+          else
+            echo "::set-output name=version::skip"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      #- name: Release
-        #run: npx semantic-release
-        #env:
-          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Container Image
+        if: steps.version.outputs.version != 'skip'
+        run: docker build -t $IMAGE:${{ steps.version.outputs.version }} .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Scan image
+        if: steps.version.outputs.version != 'skip'
+        uses: anchore/scan-action@v3
+        with:
+          image: $IMAGE:${{ steps.version.outputs.version }}
+
+      - name: Get Version
+        if: steps.version.outputs.version != 'skip'
+        run: |
+          cp .releaserc-full-release.yaml .releaserc.yaml
+          npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   terraform:
     runs-on: ubuntu-latest
