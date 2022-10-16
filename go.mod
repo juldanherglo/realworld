@@ -1,7 +1,7 @@
 module gobuff_realworld_example_app
 
 // +heroku goVersion go1.16
-go 1.19
+go 1.18
 
 require (
 	github.com/gobuffalo/buffalo v0.18.9
