@@ -111,3 +111,20 @@ jobs:
         with:
           go-version: '1.18.7'
       - run: go version
+
+      - name: Install buffalo
+        run: |-
+          wget https://github.com/gobuffalo/cli/releases/download/v0.18.8/buffalo_0.18.8_Linux_x86_64.tar.gz
+          tar -xvzf buffalo_0.18.8_Linux_x86_64.tar.gz
+          sudo mv buffalo /usr/local/bin/buffalo
+
+      - name: Start postgresql
+        run: |-
+          sudo systemctl start postgresql.service
+          pg_isready
+          sudo -u postgres psql --command="ALTER USER postgres WITH PASSWORD 'postgres';" --command="\du"
+
+      - name: Run Tests
+        run: |-
+          buffalo test
+
