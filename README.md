@@ -25,3 +25,5 @@ The DB writes its logs to cloudwatch logs as well.
 * fine tune security groups and NACLs to allow only the necessary access and
   block everything else
 * reconfigure the app so that it uses ssl encryption when talking to the RDS
+* fix issue in golang code so that we can reactivate the currently disabled
+  golangci-lint github-action
