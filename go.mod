@@ -17,7 +17,7 @@ require (
 	github.com/gobuffalo/suite/v3 v3.0.0
 	github.com/gobuffalo/validate/v3 v3.3.2
 	github.com/gofrs/uuid v4.3.0+incompatible
-	github.com/gosimple/slug v1.10.0
+	github.com/gosimple/slug v1.13.1
 	github.com/karrick/godirwalk v1.16.1 // indirect
 	github.com/markbates/grift v1.5.0
 	github.com/markbates/refresh v1.12.0 // indirect
