@@ -70,7 +70,7 @@ Loadtest can be started with:
 kubectl scale deployment realworld-loadtest --replicas 4
 ```
 
-Scheduling can be observed durint loadtest with:
+Scheduling can be observed during loadtest with:
 ```
 watch bash -c "'kubectl get pods; kubectl top pods; kubectl top nodes'"
 watch kubectl describe hpa realworld-primary
