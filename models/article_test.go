@@ -14,6 +14,7 @@ func (ms *ModelSuite) Test_Article() {
 		Title:       "Title",
 		Body:        "Body",
 		Description: "Description",
+		Tags:        "test",
 	}
 
 	// Act

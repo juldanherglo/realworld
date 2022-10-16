@@ -693,6 +693,8 @@ github.com/gobuffalo/suite/v3 v3.0.0 h1:2DygWXAShwRZIqcqI2/crh7ffWFtFen+PIx+AbTY
 github.com/gobuffalo/suite/v3 v3.0.0/go.mod h1:Q5Dx6pRObqGMg6Y3a9pbpul6qDswzc3ywyuDtXIBMeY=
 github.com/gobuffalo/suite/v3 v3.0.2 h1:HIm3L/zzn0zA9sIWpStKZU0cNwmGKmlSx92G4iZKr94=
 github.com/gobuffalo/suite/v3 v3.0.2/go.mod h1:TM+EhQMe7TR9BMgeaLYaBbBqJrQYTht2b/sN9zdpH2I=
+github.com/gobuffalo/suite/v4 v4.0.3 h1:k75IpZsHUJkK9Ga5wSYdgih38vJV5MDSUUXWol51mro=
+github.com/gobuffalo/suite/v4 v4.0.3/go.mod h1:PrkbKRdOojfk4q7Km603pFSYRlhBf4BHkC46YIMyTHs=
 github.com/gobuffalo/syncx v0.0.0-20181120191700-98333ab04150/go.mod h1:HhnNqWY95UYwwW3uSASeV7vtgYkT2t16hJgV3AEPUpw=
 github.com/gobuffalo/syncx v0.0.0-20181120194010-558ac7de985f/go.mod h1:HhnNqWY95UYwwW3uSASeV7vtgYkT2t16hJgV3AEPUpw=
 github.com/gobuffalo/syncx v0.0.0-20190224160051-33c29581e754/go.mod h1:HhnNqWY95UYwwW3uSASeV7vtgYkT2t16hJgV3AEPUpw=
@@ -1403,6 +1405,7 @@ golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e/go.mod h1:GvvjBRRGRdwPK5y
 golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 h1:/UOmuWzQfxxo9UtlXMwuQU8CMgg1eZXqTRwkSQJWKOI=
 golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
 golang.org/x/crypto v0.0.0-20210921155107-089bfa567519/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
+golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/crypto v0.0.0-20221012134737-56aed061732a h1:NmSIgad6KjE6VvHciPZuNRTKxGhlPfD6OA87W/PLkqg=
 golang.org/x/crypto v0.0.0-20221012134737-56aed061732a/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=

@@ -1,18 +1,22 @@
 package actions
 
 import (
+	"embed"
 	"testing"
 
-	"github.com/gobuffalo/packr/v2"
-	"github.com/gobuffalo/suite/v3"
+	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/suite/v4"
 )
 
 type ActionSuite struct {
 	*suite.Action
 }
 
+//go:embed basics.toml
+var files embed.FS
+
 func Test_ActionSuite(t *testing.T) {
-	action, err := suite.NewActionWithFixtures(App(), packr.New("Test_ActionSuite", "../fixtures"))
+	action, err := suite.NewActionWithFixtures(App(), buffalo.NewFS(files, "Test_ActionSuite"))
 	if err != nil {
 		t.Fatal(err)
 	}
