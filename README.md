@@ -65,6 +65,23 @@ We have [karpenter](https://karpenter.sh/) for scaling the node-group and we use
 This can be seen here:
 ![hpa](docs/hpa.png "hpa")
 
+Loadtest can be started with:
+```
+kubectl scale deployment realworld-loadtest --replicas 4
+```
+
+Scheduling can be observed durint loadtest with:
+```
+watch bash -c "'kubectl get pods; kubectl top pods; kubectl top nodes'"
+watch kubectl describe hpa realworld-primary
+```
+
+Loadtest can be stopped with:
+```
+kubectl scale deployment realworld-loadtest --replicas 0
+```
+
+
 
 # TODOs
 * have an official DNS domain with official tls certificate
