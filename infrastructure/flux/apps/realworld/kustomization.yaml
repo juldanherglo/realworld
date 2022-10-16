@@ -7,6 +7,7 @@ resources:
   - service.yaml
   - cert-secret.yaml
   - ingress.yaml
+  - canary.yaml
   - image-repo.yaml
   - image-policy.yaml
   - image-update-automation.yaml
