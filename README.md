@@ -56,7 +56,13 @@ rollout certain metrics are fullfilled:
 * maximum of req duration for P99 is 500ms
 
 # Logs and Metrics
-Apart from the cloudwatch logs we can see metrics like req duration or success rate in the linkerd viz dashboard.
+Apart from the cloudwatch logs we can see metrics like req duration or success rate in the linkerd viz dashboard:
+![linkerd](docs/loadtest-linkerd.png "linkerd")
+
+# Autoscaling
+We have [karpenter](https://karpenter.sh/) for scaling the node-group and we use the horizontal pod autoscaler for scaling the realworld app depending on cpu load.
+This can be seen here:
+![hpa](docs/hpa.png "hpa")
 
 
 # TODOs
