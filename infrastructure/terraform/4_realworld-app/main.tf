@@ -50,7 +50,8 @@ module "db" {
   username = "postgres"
   port     = 5432
 
-  multi_az               = false
+  # Switch to true
+  multi_az               = true
   db_subnet_group_name   = data.terraform_remote_state.vpc.outputs.vpc.database_subnet_group
   vpc_security_group_ids = [module.security_group.security_group_id]
 
