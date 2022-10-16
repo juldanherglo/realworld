@@ -1,0 +1,19 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: loadtester
+spec:
+  dependsOn:
+    - name: flagger
+  interval: 5m
+  chart:
+    spec:
+      chart: loadtester
+      sourceRef:
+        kind: HelmRepository
+        name: flagger
+      interval: 60m
+  values:
+    cmd:
+      timeout: 1h
+      namespaceRegexp: ''
