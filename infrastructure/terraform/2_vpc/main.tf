@@ -25,7 +25,7 @@ module "vpc" {
 
   enable_nat_gateway = true
   # TODO: switch to false
-  single_nat_gateway   = false
+  single_nat_gateway   = true
   enable_dns_hostnames = true
 
   public_subnet_tags = {
