@@ -2,7 +2,6 @@ package actions
 
 import (
 	"gobuff_realworld_example_app/models"
-	"time"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop/v6"
@@ -42,7 +41,7 @@ func HomeHandler(c buffalo.Context) error {
 	c.Set("tags", tags)
 
 	c.Set("source_page", c.Request().URL)
-	time.Sleep(1 * time.Second)
+	//time.Sleep(1 * time.Second)
 
 	return c.Render(200, r.HTML("index.html"))
 }
