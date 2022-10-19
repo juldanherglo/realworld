@@ -26,7 +26,7 @@ spec:
     # schedule interval (default 60s)
     interval: 10s
     # max number of failed metric checks before rollback
-    threshold: 20
+    threshold: 3
     # max traffic percentage routed to canary
     # percentage (0-100)
     maxWeight: 50
