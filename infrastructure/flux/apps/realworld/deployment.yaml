@@ -27,7 +27,7 @@ spec:
       - name: docker-ghcr
       containers:
       - name: realworld
-        image: ghcr.io/juldanherglo/realworld:1.0.22 # {"$imagepolicy": "flux-system:realworld"}
+        image: ghcr.io/juldanherglo/realworld:1.0.23 # {"$imagepolicy": "flux-system:realworld"}
         imagePullPolicy: IfNotPresent
         readinessProbe:
           httpGet:
