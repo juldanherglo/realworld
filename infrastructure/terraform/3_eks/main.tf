@@ -44,11 +44,11 @@ module "eks" {
   cloudwatch_log_group_retention_in_days = 3
   cluster_enabled_log_types = [
     # TODO: re-enable
-    #"audit",
-    #"api",
-    #"authenticator",
-    #"scheduler",
-    #"controllerManager",
+    "audit",
+    "api",
+    "authenticator",
+    "scheduler",
+    "controllerManager",
   ]
 
 
