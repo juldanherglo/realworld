@@ -17,6 +17,6 @@ spec:
   # https://artifacthub.io/packages/helm/linkerd2/linkerd-viz
   values:
     grafana:
-      enabled: true
+      url: grafana.grafana:3000
     prometheus:
       enabled: true
